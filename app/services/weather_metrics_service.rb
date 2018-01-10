@@ -24,11 +24,11 @@ class WeatherMetricsService
 
 	private
 
-	def load_city
+	def load_city(city_id)
 		@city = City.find_by!(id: city_id)
 	end
 	def handle_response(response)
-		status_code = response['code'].to_i
+		status_code = response['cod'].to_i
 
 		if success_responce?(status_code)
 			save_metric(response)
@@ -37,14 +37,14 @@ class WeatherMetricsService
 		end
 	end
 	def save_metric(response)
-		city.metrics.create!(prepare_metric(responcse))
+		city.metrics.create!(prepare_metric(response))
 	end
-	def prepare_metric(responcse)
+	def prepare_metric(response)
 		{
-			temp: responcse['main']['temp'],
-			min_temp: responcse['main']['temp_min'],
-			max_temp: responcse['main']['temp_max'],
-			wind_speed: responcse['wind']['speed']
+			temp: response['main']['temp'],
+			min_temp: response['main']['temp_min'],
+			max_temp: response['main']['temp_max'],
+			wind_speed: response['wind']['speed']
 		}
 	end
 	def success_responce?(code)

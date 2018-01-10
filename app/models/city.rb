@@ -11,5 +11,6 @@ class City < ApplicationRecord
 	private
 
 	def fetch_weather_data
+		WeatherMetricsService.delay.fetch(id)
 	end
 end
